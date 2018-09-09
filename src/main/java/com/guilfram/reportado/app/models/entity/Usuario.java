@@ -1,16 +1,19 @@
 package com.guilfram.reportado.app.models.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-
-
 
 @Entity
 @Table(name = "usuarios")
@@ -23,11 +26,8 @@ public class Usuario implements Serializable {
 	@Column(nullable = false, length = 45)
 	private String nombre;
 
-	@Column(name = "apellido_paterno", nullable = false, length = 30)
+	@Column(name = "apellido_paterno", nullable = false, length = 100)
 	private String apellidoPaterno;
-
-	@Column(name = "apellido_materno", nullable = true, length = 30)
-	private String apellidoMatenro;
 
 	@Column(nullable = false, length = 150, unique = true)
 	@Email
@@ -37,6 +37,10 @@ public class Usuario implements Serializable {
 	private String password;
 
 	private Boolean enabled;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "usuario_id")
+	private List<Role> roles;
 
 	public Long getId() {
 		return id;
@@ -62,14 +66,6 @@ public class Usuario implements Serializable {
 		this.apellidoPaterno = apellidoPaterno;
 	}
 
-	public String getApellidoMatenro() {
-		return apellidoMatenro;
-	}
-
-	public void setApellidoMatenro(String apellidoMatenro) {
-		this.apellidoMatenro = apellidoMatenro;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -92,6 +88,14 @@ public class Usuario implements Serializable {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	private static final long serialVersionUID = 1L;
