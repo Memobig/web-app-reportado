@@ -26,8 +26,8 @@ public class Usuario implements Serializable {
 	@Column(nullable = false, length = 45)
 	private String nombre;
 
-	@Column(name = "apellido_paterno", nullable = false, length = 100)
-	private String apellidoPaterno;
+	@Column(name = "apellido", nullable = false, length = 100)
+	private String apellido;
 
 	@Column(nullable = false, length = 150, unique = true)
 	@Email
@@ -38,10 +38,16 @@ public class Usuario implements Serializable {
 
 	private Boolean enabled;
 
+	// Agrega la llave foranea usuario_id en la tabla authorities
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
 	private List<Role> roles;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "usuario_id")
+	private List<Publicacion> publicaciones;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -58,12 +64,20 @@ public class Usuario implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public String getApellidoPaterno() {
-		return apellidoPaterno;
+	public String getApellido() {
+		return apellido;
 	}
 
-	public void setApellidoPaterno(String apellidoPaterno) {
-		this.apellidoPaterno = apellidoPaterno;
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public List<Publicacion> getPublicaciones() {
+		return publicaciones;
+	}
+
+	public void setPublicaciones(List<Publicacion> publicaciones) {
+		this.publicaciones = publicaciones;
 	}
 
 	public String getEmail() {
