@@ -41,9 +41,11 @@ INSERT INTO ubicacion (estado_id, municipio_id, asentamiento_id) VALUES(1, 1, 4)
 INSERT INTO ubicacion (estado_id, municipio_id, asentamiento_id) VALUES(1, 2, 1);
 
 /*publicaciones*/
-INSERT INTO publicaciones (usuario_id, ubicacion_id, detalles, created_at) VALUES(1, 1, "El automovil fue robado en chalco", NOW());
+INSERT INTO publicaciones (usuario_id, ubicacion_id, titulo, detalles, created_at) VALUES(1, 1, "Aveo 2018", "El automovil fue robado en chalco", NOW());
+INSERT INTO publicaciones (usuario_id, ubicacion_id, titulo, detalles, created_at) VALUES(1, 2, "Chevrolet Spark 2017","El automovil fue robado en Tlapacoya", NOW());
 
 /*caracteristicas de la publicacion*/
 INSERT INTO publicacion_caracteristica (publicacion_id, caracteristica_id, valor) VALUES(1, 2, "KW2548");
+INSERT INTO publicacion_caracteristica (publicacion_id, caracteristica_id, valor) VALUES(2, 2, "KW1550");
 
 

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,6 +27,9 @@ public class Caracteristica implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "caracteristica_id")
 	private List<PublicacionCaracteristica> publicacionCaracteristicas;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Categoria categoria;
 
 	public Long getId() {
 		return id;
@@ -49,6 +53,14 @@ public class Caracteristica implements Serializable {
 
 	public void setPublicacionCaracteristicas(List<PublicacionCaracteristica> publicacionCaracteristicas) {
 		this.publicacionCaracteristicas = publicacionCaracteristicas;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	private static final long serialVersionUID = 1L;

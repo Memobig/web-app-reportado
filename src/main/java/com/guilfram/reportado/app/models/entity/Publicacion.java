@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,8 +27,10 @@ public class Publicacion implements Serializable {
 	private Long id;
 
 	private String detalles;
+	
+	private String titulo;
 
-	@Temporal(value = TemporalType.DATE)
+	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
 	private Date createAt;
 
@@ -35,6 +38,12 @@ public class Publicacion implements Serializable {
 	@JoinColumn(name = "publicacion_id")
 	private List<PublicacionCaracteristica> publicacionCaracteristicas;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Usuario usuario;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Ubicacion ubicacion;
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +64,14 @@ public class Publicacion implements Serializable {
 		return detalles;
 	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
 	public void setDetalles(String detalles) {
 		this.detalles = detalles;
 	}
@@ -65,6 +82,22 @@ public class Publicacion implements Serializable {
 
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Ubicacion getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(Ubicacion ubicacion) {
+		this.ubicacion = ubicacion;
 	}
 
 	private static final long serialVersionUID = 1L;

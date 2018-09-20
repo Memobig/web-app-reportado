@@ -12,14 +12,14 @@
 			<h1 class="display-4 font-weight-normal">REPO</h1>
 			
 			
-			
+<form th:action="@{/busqueda}" method="get">	
 <div class="input-group input-group-lg mb-3">
-  <input type="text" class="form-control" placeholder="¿Qué estas buscando?" aria-label="¿Qué estas buscando?" aria-describedby="basic-addon2">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-  </div>
+	  <input type="text" class="form-control" name="q" placeholder="¿Qué estas buscando?" aria-label="¿Qué estas buscando?" aria-describedby="basic-addon2">
+	  <div class="input-group-append">
+	    <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+	  </div>
 </div>
-
+</form>
 
 				
 				

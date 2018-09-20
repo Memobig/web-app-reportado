@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,6 +28,14 @@ public class Ubicacion implements Serializable {
 	@JoinColumn(name = "ubicacion_id")
 	private List<Publicacion> publicaciones;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Municipio municipio;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Asentamiento asentamiento;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Estado estado;
 
 	public Long getId() {
 		return id;
@@ -50,6 +59,30 @@ public class Ubicacion implements Serializable {
 
 	public void setPublicaciones(List<Publicacion> publicaciones) {
 		this.publicaciones = publicaciones;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	public Municipio getMunicipio() {
+		return municipio;
+	}
+
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+
+	public Asentamiento getAsentamiento() {
+		return asentamiento;
+	}
+
+	public void setAsentamiento(Asentamiento asentamiento) {
+		this.asentamiento = asentamiento;
 	}
 
 	private static final long serialVersionUID = 1L;
