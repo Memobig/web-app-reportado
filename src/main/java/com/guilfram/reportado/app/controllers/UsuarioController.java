@@ -30,27 +30,6 @@ public class UsuarioController {
 	@GetMapping("/")
 	public String index() {
 		
-		/*
-		Usuario user = usuarioService.findOne(1L);
-		
-		log.info("Usuario recuperado: " + user.getNombre() + " " + user.getApellido());
-		
-		for(Publicacion publicacion: user.getPublicaciones()) {
-			
-			log.info("Publicacion: " + publicacion.getCreateAt().toString());
-			log.info("Detalles: " + publicacion.getDetalles());
-			log.info("Estado: " + publicacion.getUbicacion().getEstado().getNombre());
-			log.info("Municipio: " + publicacion.getUbicacion().getMunicipio().getNombre());
-			log.info("Asentamiento: " + publicacion.getUbicacion().getAsentamiento().getNombre());
-			//log.info("Email: " + publicacion.get);
-			//caracteristicas
-			for(PublicacionCaracteristica pc:publicacion.getPublicacionCaracteristicas()) {
-				log.info("Categoria: " + pc.getCaracteristica().getCategoria().getNombre());
-				log.info("Caracteristica: " + pc.getCaracteristica().getNombre());
-				log.info("Valor: " + pc.getValor());
-			}
-		}
-		*/
 		return "inicio";
 	}
 	
