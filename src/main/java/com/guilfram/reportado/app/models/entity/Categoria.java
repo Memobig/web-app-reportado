@@ -1,42 +1,43 @@
 package com.guilfram.reportado.app.models.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
+/**
+ * The persistent class for the categorias database table.
+ * 
+ */
 @Entity
-@Table(name = "categorias")
+@Table(name="categorias")
+@NamedQuery(name="Categoria.findAll", query="SELECT c FROM Categoria c")
 public class Categoria implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 
 	private String nombre;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "categoria_id")
+	//bi-directional many-to-one association to Caracteristica
+	@OneToMany(mappedBy="categoria")
 	private List<Caracteristica> caracteristicas;
 
-	public Long getId() {
-		return id;
+	public Categoria() {
 	}
 
-	public void setId(Long id) {
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
@@ -44,13 +45,25 @@ public class Categoria implements Serializable {
 	}
 
 	public List<Caracteristica> getCaracteristicas() {
-		return caracteristicas;
+		return this.caracteristicas;
 	}
 
 	public void setCaracteristicas(List<Caracteristica> caracteristicas) {
 		this.caracteristicas = caracteristicas;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public Caracteristica addCaracteristica(Caracteristica caracteristica) {
+		getCaracteristicas().add(caracteristica);
+		caracteristica.setCategoria(this);
+
+		return caracteristica;
+	}
+
+	public Caracteristica removeCaracteristica(Caracteristica caracteristica) {
+		getCaracteristicas().remove(caracteristica);
+		caracteristica.setCategoria(null);
+
+		return caracteristica;
+	}
 
 }

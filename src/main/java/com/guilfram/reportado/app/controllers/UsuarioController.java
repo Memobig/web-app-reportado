@@ -38,7 +38,7 @@ public class UsuarioController {
 		
 		List<Publicacion> publicaciones = usuarioService.findByValor(term);
 		
-		log.info("Valor del termino:" + term);
+		//log.info("Valor del termino:" + term);
 		
 		if(publicaciones.isEmpty()) {
 			flash.addFlashAttribute("error", "No se encontro información en la base de datos");
@@ -50,5 +50,25 @@ public class UsuarioController {
 		model.addAttribute("publicaciones", publicaciones);
 		
 		return "busqueda";
+	}
+	// /publicaciones/ciudad-de-mexico/tlahuac/15/mazda-3-2005
+	@GetMapping("/publicaciones/*/*/*/*-id-{id}")
+	public String publicaciones(@PathVariable("id") Long id, Model model, RedirectAttributes flash) {
+		
+
+		
+		Publicacion publicacion = usuarioService.findPublicacionById(id);
+		
+		if (publicacion != null) {
+			model.addAttribute("titulo", 
+					publicacion.getTitulo() + " en " + publicacion.getLocalidad().getNombre());
+			model.addAttribute("publicacion", publicacion);
+			model.addAttribute("imagenes", publicacion.getImagenes());
+		} else {
+			flash.addFlashAttribute("error", "La publicación solicitada no existe");
+			return "redirect:/";
+		}
+		
+		return "publicacion";
 	}
 }

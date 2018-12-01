@@ -1,56 +1,69 @@
 package com.guilfram.reportado.app.models.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
+/**
+ * The persistent class for the estado database table.
+ * 
+ */
 @Entity
-@Table(name = "estados")
+@Table(name="estado")
+@NamedQuery(name="Estado.findAll", query="SELECT e FROM Estado e")
 public class Estado implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 
 	private String nombre;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "estado_id")
-	private List<Ubicacion> ubicacion;
 
-	public Long getId() {
-		return id;
+	//bi-directional many-to-one association to Municipio
+	@OneToMany(mappedBy="estado")
+	private List<Municipio> municipios;
+
+	public Estado() {
 	}
 
-	public List<Ubicacion> getUbicacion() {
-		return ubicacion;
+	public int getId() {
+		return this.id;
 	}
 
-	public void setUbicacion(List<Ubicacion> ubicacion) {
-		this.ubicacion = ubicacion;
-	}
-
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public List<Municipio> getMunicipios() {
+		return this.municipios;
+	}
+
+	public void setMunicipios(List<Municipio> municipios) {
+		this.municipios = municipios;
+	}
+
+	public Municipio addMunicipio(Municipio municipio) {
+		getMunicipios().add(municipio);
+		municipio.setEstado(this);
+
+		return municipio;
+	}
+
+	public Municipio removeMunicipio(Municipio municipio) {
+		getMunicipios().remove(municipio);
+		municipio.setEstado(null);
+
+		return municipio;
+	}
 
 }

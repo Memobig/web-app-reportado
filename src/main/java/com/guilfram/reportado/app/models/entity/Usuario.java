@@ -1,117 +1,135 @@
 package com.guilfram.reportado.app.models.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
 
+/**
+ * The persistent class for the usuarios database table.
+ * 
+ */
 @Entity
-@Table(name = "usuarios")
+@Table(name="usuarios")
+@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 
-	@Column(nullable = false, length = 45)
-	private String nombre;
-
-	@Column(name = "apellido", nullable = false, length = 100)
 	private String apellido;
 
-	@Column(nullable = false, length = 150, unique = true)
-	@Email
 	private String email;
 
-	@Column(length = 60)
+	private byte enabled;
+
+	private String nombre;
+
 	private String password;
 
-	private Boolean enabled;
+	//bi-directional many-to-one association to Authority
+	@OneToMany(mappedBy="usuario")
+	private List<Authority> authorities;
 
-	// Agrega la llave foranea usuario_id en la tabla authorities
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "usuario_id")
-	private List<Role> roles;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "usuario_id")
+	//bi-directional many-to-one association to Publicacione
+	@OneToMany(mappedBy="usuario")
 	private List<Publicacion> publicaciones;
-	
-	
-	public Long getId() {
-		return id;
+
+	public Usuario() {
 	}
 
-	public void setId(Long id) {
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
 	public String getApellido() {
-		return apellido;
+		return this.apellido;
 	}
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
 
-	public List<Publicacion> getPublicaciones() {
-		return publicaciones;
-	}
-
-	public void setPublicaciones(List<Publicacion> publicaciones) {
-		this.publicaciones = publicaciones;
-	}
-
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	public byte getEnabled() {
+		return this.enabled;
+	}
+
+	public void setEnabled(byte enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public Boolean getEnabled() {
-		return enabled;
+	public List<Authority> getAuthorities() {
+		return this.authorities;
 	}
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Authority addAuthority(Authority authority) {
+		getAuthorities().add(authority);
+		authority.setUsuario(this);
+
+		return authority;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public Authority removeAuthority(Authority authority) {
+		getAuthorities().remove(authority);
+		authority.setUsuario(null);
+
+		return authority;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public List<Publicacion> getPublicaciones() {
+		return this.publicaciones;
+	}
+
+	public void setPublicaciones(List<Publicacion> publicaciones) {
+		this.publicaciones = publicaciones;
+	}
+
+	public Publicacion addPublicacione(Publicacion publicacione) {
+		getPublicaciones().add(publicacione);
+		publicacione.setUsuario(this);
+
+		return publicacione;
+	}
+
+	public Publicacion removePublicacione(Publicacion publicacione) {
+		getPublicaciones().remove(publicacione);
+		publicacione.setUsuario(null);
+
+		return publicacione;
+	}
 
 }

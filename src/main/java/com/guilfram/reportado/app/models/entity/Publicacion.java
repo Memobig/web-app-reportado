@@ -1,105 +1,140 @@
 package com.guilfram.reportado.app.models.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
+/**
+ * The persistent class for the publicaciones database table.
+ * 
+ */
 @Entity
-@Table(name = "publicaciones")
+@Table(name="publicaciones")
+@NamedQuery(name="Publicacion.findAll", query="SELECT p FROM Publicacion p")
 public class Publicacion implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	private String detalles;
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="created_at")
+	private Date createdAt;
+
 	private String titulo;
+	
+	private String detalles;
 
-	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(name = "created_at")
-	private Date createAt;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "publicacion_id")
+	//bi-directional many-to-one association to PublicacionCaracteristica
+	@OneToMany(mappedBy="publicacion")
 	private List<PublicacionCaracteristica> publicacionCaracteristicas;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	//bi-directional many-to-many association to Imagene
+	@ManyToMany(mappedBy="publicaciones")
+	private List<Imagene> imagenes;
+
+	//bi-directional many-to-one association to Categoria
+	@ManyToOne
+	private Categoria categoria;
+	
+	//bi-directional many-to-one association to Usuario
+	@ManyToOne
 	private Usuario usuario;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Ubicacion ubicacion;
-	
+
+	//bi-directional many-to-one association to Localidad
+	@ManyToOne
+	private Localidad localidad;
+
+	public Publicacion() {
+	}
+
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public List<PublicacionCaracteristica> getPublicacionCaracteristicas() {
-		return publicacionCaracteristicas;
+	public Date getCreatedAt() {
+		return this.createdAt;
 	}
 
-	public void setPublicacionCaracteristicas(List<PublicacionCaracteristica> publicacionCaracteristicas) {
-		this.publicacionCaracteristicas = publicacionCaracteristicas;
-	}
-
-	public String getDetalles() {
-		return detalles;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public String getTitulo() {
-		return titulo;
+		return this.titulo;
 	}
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+	
+	public String getDetalles() {
+		return this.detalles;
 	}
 
 	public void setDetalles(String detalles) {
 		this.detalles = detalles;
 	}
 
-	public Date getCreateAt() {
-		return createAt;
+	public List<PublicacionCaracteristica> getPublicacionCaracteristicas() {
+		return this.publicacionCaracteristicas;
 	}
 
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
+	public void setPublicacionCaracteristicas(List<PublicacionCaracteristica> publicacionCaracteristicas) {
+		this.publicacionCaracteristicas = publicacionCaracteristicas;
 	}
 
+	public PublicacionCaracteristica addPublicacionCaracteristica(PublicacionCaracteristica publicacionCaracteristica) {
+		getPublicacionCaracteristicas().add(publicacionCaracteristica);
+		publicacionCaracteristica.setPublicacion(this);
+
+		return publicacionCaracteristica;
+	}
+
+	public PublicacionCaracteristica removePublicacionCaracteristica(PublicacionCaracteristica publicacionCaracteristica) {
+		getPublicacionCaracteristicas().remove(publicacionCaracteristica);
+		publicacionCaracteristica.setPublicacion(null);
+
+		return publicacionCaracteristica;
+	}
+
+	public List<Imagene> getImagenes() {
+		return this.imagenes;
+	}
+
+	public void setImagenes(List<Imagene> imagenes) {
+		this.imagenes = imagenes;
+	}
+
+	public Categoria getCategoria() {
+		return this.categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+	
 	public Usuario getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
-	public Ubicacion getUbicacion() {
-		return ubicacion;
+	public Localidad getLocalidad() {
+		return this.localidad;
 	}
 
-	public void setUbicacion(Ubicacion ubicacion) {
-		this.ubicacion = ubicacion;
+	public void setLocalidad(Localidad localidad) {
+		this.localidad = localidad;
 	}
-
-	private static final long serialVersionUID = 1L;
 
 }

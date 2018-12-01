@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head">
+
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<!-- contenido -->
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 py-4">
+				<nav aria-label="breadcrumb">
+				  <ol class="breadcrumb">
+				    <li class="breadcrumb-item" th:text="${publicacion.localidad.municipio.estado.nombre}"></li>
+				    <li class="breadcrumb-item" th:text="${publicacion.localidad.municipio.nombre}"><a href="#">Library</a></li>
+				    <li class="breadcrumb-item active" aria-current="page" th:text="${publicacion.localidad.nombre}">Data</li>
+				  </ol>
+				</nav>
+				<div class="card-deck py-1">
+					<div class="card" th:each="imagen: ${publicacion.imagenes}">
+						<img class="card-img-top img-thumbnail" th:src="@{'' + ${imagen.url}}" alt="Card image cap">
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-header">Descripción</div>
+					<div class="card-body"
+						th:each="pub: ${publicacion}">
+						<h5 class="card-title" th:text="${pub.titulo}">Título</h5>
+						<p class="card-text" th:text="${pub.detalles}">Descripción</p>
+						<p class="card-text"><small class="text-muted" th:text="${@timeAgo.toDuration(pub.createdAt)}">Last update 3 mins ago</small></p>
+					</div>
+				</div>
+
+				<div class="card mt-4">
+					<div class="card-header">
+						Características
+					</div>
+					<div class="card-body" th:each="cara: ${publicacion.publicacionCaracteristicas}">
+						<h5 class="card-title" th:text="${cara.caracteristica.nombre}"></h5>
+						<p class="card-text" th:text="${cara.valor}"></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 py-4">
+				<div class="card">
+					<div class="card-header">Contacto</div>
+					<div class="card-body">
+						<h5 class="card-title">Nombre</h5>
+						<p class="card-text">Juan Perez</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- fin row -->
+	</div>
+	<!-- fin contenido -->
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

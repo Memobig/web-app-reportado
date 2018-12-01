@@ -1,68 +1,81 @@
 package com.guilfram.reportado.app.models.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
+/**
+ * The persistent class for the caracteristicas database table.
+ * 
+ */
 @Entity
-@Table(name = "caracteristicas")
+@Table(name="caracteristicas")
+@NamedQuery(name="Caracteristica.findAll", query="SELECT c FROM Caracteristica c")
 public class Caracteristica implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 
 	private String nombre;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "caracteristica_id")
-	private List<PublicacionCaracteristica> publicacionCaracteristicas;
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	//bi-directional many-to-one association to Categoria
+	@ManyToOne
 	private Categoria categoria;
 
-	public Long getId() {
-		return id;
+	//bi-directional many-to-one association to PublicacionCaracteristica
+	@OneToMany(mappedBy="caracteristica")
+	private List<PublicacionCaracteristica> publicacionCaracteristicas;
+
+	public Caracteristica() {
 	}
 
-	public void setId(Long id) {
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public List<PublicacionCaracteristica> getPublicacionCaracteristicas() {
-		return publicacionCaracteristicas;
-	}
-
-	public void setPublicacionCaracteristicas(List<PublicacionCaracteristica> publicacionCaracteristicas) {
-		this.publicacionCaracteristicas = publicacionCaracteristicas;
-	}
-
 	public Categoria getCategoria() {
-		return categoria;
+		return this.categoria;
 	}
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public List<PublicacionCaracteristica> getPublicacionCaracteristicas() {
+		return this.publicacionCaracteristicas;
+	}
+
+	public void setPublicacionCaracteristicas(List<PublicacionCaracteristica> publicacionCaracteristicas) {
+		this.publicacionCaracteristicas = publicacionCaracteristicas;
+	}
+
+	public PublicacionCaracteristica addPublicacionCaracteristica(PublicacionCaracteristica publicacionCaracteristica) {
+		getPublicacionCaracteristicas().add(publicacionCaracteristica);
+		publicacionCaracteristica.setCaracteristica(this);
+
+		return publicacionCaracteristica;
+	}
+
+	public PublicacionCaracteristica removePublicacionCaracteristica(PublicacionCaracteristica publicacionCaracteristica) {
+		getPublicacionCaracteristicas().remove(publicacionCaracteristica);
+		publicacionCaracteristica.setCaracteristica(null);
+
+		return publicacionCaracteristica;
+	}
 
 }
